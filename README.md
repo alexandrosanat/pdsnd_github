@@ -8,7 +8,9 @@ Bikeshare Project
 In this project, you will use data provided by Motivate, a bike share system provider for many major cities in the United States, to uncover bike share usage patterns.
 
 ### Files used
-Include the files used
+washington.csv
+new_york_city.csv
+chicago.csv
 
 ### Credits
-It's important to give proper credit. Add links to any repo that inspired you or blogposts you consulted.
+Udacity
