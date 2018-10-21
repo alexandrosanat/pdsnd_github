@@ -53,22 +53,26 @@ def get_data(city, selected_filter):
     df['hour'] = df['Start Time'].dt.hour
     df['day_of_week'] = df['Start Time'].dt.weekday_name
 
+    #filter data by month
     if selected_filter == "month":
         month = which_month()
         day = 'all'
         df = df[df['month'] == month]
         return df, day, month
+    #filter data by day
     elif selected_filter == "day":
         month = 'all'
         day = which_day()
         df = df[df['day_of_week'] == day]
         return df, day, month
+    #filter data by both day & month
     elif selected_filter == "both":
         month = which_month()
         day =which_day()
         df = df[df['month'] == month]
         df = df[df['day_of_week'] == day]
         return df, day, month
+    #no filter
     elif selected_filter == "none":
         month = 'all'
         day = 'all'
