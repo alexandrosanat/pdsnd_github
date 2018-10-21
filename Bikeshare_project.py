@@ -16,7 +16,7 @@ def get_filters():
         (str) filter - type of filter
     """
     print("Welcome! Let's explore some US BikeShare data!")
-    
+
     # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
     city = str(input("Would you like to see data for Chicago, New York or Washington? ")).lower()
 
@@ -27,7 +27,7 @@ def get_filters():
             break
         else:
             city = str(input("Please enter a valid name: Chicago, New York or Washington or press CRL + C to quit ")).lower()
-    
+
     # get user input for filter
     selected_filter = str(input("Would you like to filter the data by month, day, both or not at all? Type \"none\" for no time filter: " )).lower()
     while True:
@@ -42,7 +42,7 @@ def get_filters():
 
 def get_data(city, selected_filter):
     """ Requests city and filters and returns filtered dataset """
-    
+
     # load data file into a dataframe
     df = pd.read_csv(CITY_DATA[city])
 
@@ -62,7 +62,7 @@ def get_data(city, selected_filter):
         month = 'all'
         day = which_day()
         df = df[df['day_of_week'] == day]
-        return df, day, month 
+        return df, day, month
     elif selected_filter == "both":
         month = which_month()
         day =which_day()
@@ -74,22 +74,22 @@ def get_data(city, selected_filter):
         day = 'all'
         return df, day, month
 
-        
+
 
 def which_month():
     """ Requests input Month and returns month's index """
     month = 0
-    months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun']
-    selected_month = str(input("Which month? Jan, Feb, Mar, Apr, May, Jun: " )).lower()
+    months = ['january', 'february', 'march', 'april', 'may', 'june']
+    selected_month = str(input("Which month? January, February, March, April, May, June: " )).lower()
     while True:
         if selected_month in months:
             month = months.index(selected_month) + 1
             return month
             break
         else:
-            selected_month = str(input("Select one of the following: Jan, Feb, Mar, Apr, May, Jun: or press CRL + C to quit " )).lower()
-        
-        
+            selected_month = str(input("Select one of the following: January, February, March, April, May, June: or press CRL + C to quit " )).lower()
+
+
 def which_day():
     """ Requests input Day and returns name of Day """
     day = 0
@@ -110,34 +110,34 @@ def time_stats(df, day, month, city, selected_filter):
     print('-'*40 + '\nCalculating The Most Frequent Times of Travel...\n')
     start_time = time.time()
     months = ['January', 'February', 'March', 'April', 'May', 'June']
-    
+
     #Returns the most common month in dataset
     common_month = df['month'].mode()[0]
     #Returns the most common day in dataset
     common_day = df['day_of_week'].mode()[0]
     #Returns the most common hour in dataset
     common_hour = df['hour'].mode()[0]
-    
+
     #Returns the frequency of each month in dataset
     month_count = pd.DataFrame(df['month'].value_counts())
     #Returns the frequency of each day in selected month
     day_count = pd.DataFrame(df['day_of_week'].value_counts())
     #Returns the frequency of each hour in dataset
     hour_count = pd.DataFrame(df['hour'].value_counts())
-    
+
     #Returns the frequency of most common month in dataset
     max_month_count = month_count['month'].iloc[0]
     #Returns the frequency of most common day in dataset
     max_day_count = day_count['day_of_week'].iloc[0]
     #Returns the frequency of most common hour in dataset
     max_hour_count = hour_count['hour'].iloc[0]
-    
+
     #Print appropriate statistics based on applied filter
     if selected_filter == 'month':
         print("The most common day for {} in {} was {}. (Count: {}).".format(months[month - 1], city.title(), common_day, max_day_count))
         print("The most common hour for {} in {} was {}:00h. (Count: {})".format(months[month - 1], city.title(), common_hour, max_hour_count))
         print("(Filter: {})".format(selected_filter.title()))
-    elif selected_filter == 'day':   
+    elif selected_filter == 'day':
         print("The most common month for {} in {} was {}. (Count: {})".format(day, city.title(), months[common_month - 1], max_month_count))
         print("The most common hour for {} in {} was {}:00h. (Count: {})".format(day, city.title(), common_hour,max_hour_count))
         print("(Filter: {})".format(selected_filter.title()))
@@ -179,34 +179,34 @@ def station_stats(df, day, month, city, selected_filter):
     common_end_station = de['End Station'].iloc[0]
     #Returns the frequency of most common End Station in dataset
     max_end_station_count = de['Count'].iloc[0]
-    
-    
+
+
     #Creates a DataFrame grouped by Start and End Station and creates a column 'Count' with value counts
     dm = pd.DataFrame({'Count': df.groupby( ['Start Station', 'End Station'] ).size().sort_values(ascending=False)}).reset_index()
     comb_start_station = dm['Start Station'].iloc[0]
     comb_end_station = dm['End Station'].iloc[0]
     comb_count = dm['Count'].iloc[0]
-    
-    
+
+
     if selected_filter == 'month':
         print("The most common Start Station in {} on {} was {}. (Count: {})".format(city.title(), months[month - 1], common_start_station, max_start_station_count))
         print("The most common End Station in {} on {} was {}. (Count: {})".format(city.title(), months[month - 1], common_end_station, max_end_station_count))
-        print("The most common Start & End Station combination in {} on {} was {} - {}. (Count: {})".format(city.title(), months[month - 1], comb_start_station, comb_end_station, comb_count))     
+        print("The most common Start & End Station combination in {} on {} was {} - {}. (Count: {})".format(city.title(), months[month - 1], comb_start_station, comb_end_station, comb_count))
         print("(Filter: {})".format(selected_filter.title()))
     elif selected_filter == 'day':
         print("The most common Start Station for {} in {} was {}. (Count: {})".format(day, city.title(), common_start_station, max_start_station_count))
         print("The most common End Station for {} in {} was {}. (Count: {})".format(day, city.title(), common_end_station, max_end_station_count))
-        print("The most common Start & End Station combination for {} in {} was {} - {}. (Count: {})".format(day, city.title(), comb_start_station, comb_end_station, comb_count))     
+        print("The most common Start & End Station combination for {} in {} was {} - {}. (Count: {})".format(day, city.title(), comb_start_station, comb_end_station, comb_count))
         print("(Filter: {})".format(selected_filter.title()))
     elif selected_filter == 'both':
         print("The most common Start Station on {} for {} in {} was {}. (Count: {})".format(day, months[month - 1], city.title(), common_start_station, max_start_station_count))
         print("The most common End Station on {} for {} in {} was {}. (Count: {})".format(day, months[month - 1], city.title(), common_end_station, max_end_station_count))
-        print("The most common Start & End Station combination on {} for {} in {} was {} - {}. (Count: {})".format(day, months[month - 1], city.title(), comb_start_station, comb_end_station, comb_count))     
+        print("The most common Start & End Station combination on {} for {} in {} was {} - {}. (Count: {})".format(day, months[month - 1], city.title(), comb_start_station, comb_end_station, comb_count))
         print("(Filter: {})".format(selected_filter.title()))
     else:
         print("The most common Start Station in {} was {}. (Count: {})".format(city.title(), common_start_station, max_start_station_count))
         print("The most common End Station in {} was {}. (Count: {})".format(city.title(), common_end_station, max_end_station_count))
-        print("The most common Start & End Station combination in {} was {} - {}. (Count: {})".format(city.title(), comb_start_station, comb_end_station, comb_count))     
+        print("The most common Start & End Station combination in {} was {} - {}. (Count: {})".format(city.title(), comb_start_station, comb_end_station, comb_count))
         print("(Filter: {})".format(selected_filter.title()))
 
     #Print calculation time
@@ -250,9 +250,9 @@ def user_stats(df, city):
     df = df.dropna()
     du = pd.DataFrame({'Count': df.groupby( ['User Type'] ).size().sort_values(ascending=False)}).reset_index()
     print(du.to_string(index=False))
-    
+
     # Display counts of gender
-    
+
     if city == 'chicago'or city == 'new york':
         dg = pd.DataFrame({'Count': df.groupby( ['Gender'] ).size().sort_values(ascending=False)}).reset_index()
         print('\n' + dg.to_string(index=False))
@@ -296,14 +296,14 @@ def raw_input(df):
             break
         else:
             raw_answer = str(input("Please type \"Yes\" to see raw results or \"No\" to quit. ")).lower()
-            
+
 
 
 def main():
     while True:
         city, selected_filter = get_filters()
         df, day, month = get_data(city, selected_filter)
-                
+
         time_stats(df, day, month, city, selected_filter)
         station_stats(df, day, month, city, selected_filter)
         trip_duration_stats(df)
