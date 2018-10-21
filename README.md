@@ -5,7 +5,7 @@
 Bikeshare Project
 
 ### Description
-Describe what your project is about and what it does
+In this project, you will use data provided by Motivate, a bike share system provider for many major cities in the United States, to uncover bike share usage patterns.
 
 ### Files used
 Include the files used
