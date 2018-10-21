@@ -177,20 +177,17 @@ def station_stats(df, day, month, city, selected_filter):
     #Returns the frequency of most common Start Station in dataset
     max_start_station_count = ds['Count'].iloc[0]
 
-
     #Creates a DataFrame grouped by End Station and creates a column 'Count' with value counts
     de = pd.DataFrame({'Count': df.groupby( ['End Station'] ).size().sort_values(ascending=False)}).reset_index()
     common_end_station = de['End Station'].iloc[0]
     #Returns the frequency of most common End Station in dataset
     max_end_station_count = de['Count'].iloc[0]
 
-
     #Creates a DataFrame grouped by Start and End Station and creates a column 'Count' with value counts
     dm = pd.DataFrame({'Count': df.groupby( ['Start Station', 'End Station'] ).size().sort_values(ascending=False)}).reset_index()
     comb_start_station = dm['Start Station'].iloc[0]
     comb_end_station = dm['End Station'].iloc[0]
     comb_count = dm['Count'].iloc[0]
-
 
     if selected_filter == 'month':
         print("The most common Start Station in {} on {} was {}. (Count: {})".format(city.title(), months[month - 1], common_start_station, max_start_station_count))
